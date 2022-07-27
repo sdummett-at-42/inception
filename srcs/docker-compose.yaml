@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  mariadb:
+    build:
+      context: ./requirements/mariadb
+    container_name: mariadb_container
+    volumes:
+      - db_vol:/home
+
+      
+  nginx:
+    build:
+      context: ./requirements/nginx
+    container_name: nginx_container
+    volumes:
+      - wordpress_vol:/home
+
+  wordpress:
+    build: 
+      context: ./requirements/wordpress
+    container_name: wordpress_container
+    volumes:
+      - wordpress_vol:/home
+
+volumes:
+  db_vol:
+  wordpress_vol:
