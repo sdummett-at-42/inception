@@ -1,20 +1,21 @@
-FROM alpine:3.16
+FROM alpine:3.13
 
-RUN apk update
+RUN	apk update && apk upgrade && apk add --no-cache \
+        nginx \
+        openssl
 
-RUN apk add nginx vim openssl
-
+# nginx SSL
 RUN mkdir /etc/nginx/ssl
-
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+RUN openssl req -x509 -days 365 -newkey rsa:4096 -nodes \
 	-keyout /etc/nginx/ssl/sdummett.42.fr.key \
 	-out /etc/nginx/ssl/sdummett.42.fr.crt \
-	-subj "/C=FR/ST=Ile-de-France/L=Paris/O=42-Paris/OU=inception project/CN=sdummett"
+	-subj "/C=FR/ST=Ile-de-France/L=Paris/O=42-Paris/OU=42Stud/CN=sdummett"
 
-
-COPY ./conf/index.html /var/www/
-COPY ./conf/nginx.conf /etc/nginx/http.d/
+# nginx config
+RUN mkdir -p /run/nginx
+COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 443
 
-CMD ["nginx", "-g", "daemon off;"]
+# Start nginx
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
