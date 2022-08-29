@@ -1,0 +1,33 @@
+version: '3.9'
+services:
+
+  nginx:
+    build: requirements/nginx/
+    container_name: nginx
+    ports:
+      - "443:443"
+    volumes:
+      - "/home/sdummett/data/website:/var/www/html"
+        #    depends_on:
+        #      - wordpress
+    networks:
+      - frontend
+    restart: unless-stopped
+
+  mariadb:
+    build: requirements/mariadb/
+    container_name: mariadb
+    volumes:
+      - "/home/sdummett/data/database:/var/lib/mysql"
+    networks:
+      - backend
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PWD:   ${MYSQL_ROOT_PWD}
+      WP_DATABASE_NAME: ${WP_DATABASE_NAME}
+      WP_DATABASE_USR:  ${WP_DATABASE_USR}
+      WP_DATABASE_PWD:  ${WP_DATABASE_PWD}
+    
+networks:
+  frontend:
+  backend:

@@ -8,14 +8,14 @@ compose:
 		sudo chmod 777 /etc/hosts; \
 		sudo echo "127.0.0.1 sdummett.42.fr" >> /etc/hosts; \
 	fi
-	docker-compose -f srcs/docker-compose.yaml build
-	docker-compose -f srcs/docker-compose.yaml up -d
+	docker-compose -f srcs/docker-compose.yml build
+	docker-compose -f srcs/docker-compose.yml up -d
 
 status:
 	docker ps -a
 
 down:
-	docker-compose -f srcs/docker-compose.yaml down
+	docker-compose -f srcs/docker-compose.yml down
 
 fclean: down
 	docker system prune -a
