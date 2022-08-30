@@ -1,22 +1,21 @@
+all: up
 
-all: compose
-
-compose:
-	sudo mkdir -p /home/sdummett/data/db
-	sudo mkdir -p /home/sdummett/data/wordpress
+up:
+	sudo mkdir -p /home/sdummett/data/database
+	sudo mkdir -p /home/sdummett/data/website
 	if ! cat /etc/hosts | grep '127.0.0.1 sdummett.42.fr'; then \
 		sudo chmod 777 /etc/hosts; \
 		sudo echo "127.0.0.1 sdummett.42.fr" >> /etc/hosts; \
 	fi
-	docker-compose -f srcs/docker-compose.yml build
-	docker-compose -f srcs/docker-compose.yml up -d
-
-status:
-	docker ps -a
+	sudo docker-compose -f srcs/docker-compose.yml up --build
 
 down:
-	docker-compose -f srcs/docker-compose.yml down
+	sudo docker-compose -f srcs/docker-compose.yml down
 
 fclean: down
-	docker system prune -a
+	sudo docker system prune -a
+	sudo rm -rf /home/sdummett
 
+re: fclean up
+
+.PHONY: all up down fclean
