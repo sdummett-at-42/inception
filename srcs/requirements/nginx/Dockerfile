@@ -1,8 +1,8 @@
-FROM alpine:3.13
+FROM alpine:3.16
 
 RUN	apk update && apk upgrade && apk add --no-cache \
-        nginx \
         openssl
+RUN apk add nginx=1.18.0-r15 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.13/main
 
 # nginx SSL
 RUN mkdir /etc/nginx/ssl
@@ -14,8 +14,6 @@ RUN openssl req -x509 -days 365 -newkey rsa:4096 -nodes \
 # nginx config
 RUN mkdir -p /run/nginx
 COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 443
 
 # Start nginx
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

@@ -2,10 +2,11 @@ version: '3.9'
 services:
 
   nginx:
+    image: nginx
     build: requirements/nginx/
     container_name: nginx
     ports:
-      - "443:443"
+      - 443:443
     volumes:
       - website-vol:/var/www/html
     depends_on:
@@ -15,6 +16,7 @@ services:
     restart: unless-stopped
 
   wordpress:
+    image: wordpress
     build: requirements/wordpress/
     container_name: wordpress
     volumes:
@@ -40,6 +42,7 @@ services:
       WP_EMAIL:         ${WP_EMAIL}
 
   mariadb:
+    image: mariadb
     build: requirements/mariadb/
     container_name: mariadb
     volumes:
